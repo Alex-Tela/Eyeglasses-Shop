@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, {useRef, useEffect, useState} from 'react';
+import styled from 'styled-components';
 
 const Container = styled.div`
     background-color: #FF5757;
@@ -33,102 +33,139 @@ const Bar = styled.div`
 
 const Wrapper = styled.div``
 
-
-const data = document.getElementsByClassName('stats');
-const text = document.getElementsByClassName('stats-text');
-
-// We record the heights of our Content elements
-const getDimensionsOfContents = () => {
-    const dims = {};
-
-    for (let i = 0; i < data.length; i++) {
-        console.log(data[i]);
-        dims[`el${i}`] = data[i].clientHeight;
-        console.log(dims[data[i]])
+const desc = [
+    {
+        title: " in 10",
+        sub: "people have eyesight issues"
+    },
+    {
+        title: "%",
+        sub: "of adults wear eyeglasses"
+    },
+    {
+        title: " billion",
+        sub: "people wear eyeglasses"
     }
+];
 
-    console.log(Object.values(dims));
-    return dims;
-}
-
-const something = getDimensionsOfContents();
-console.log(something);
-
-// const getScrollPosition = () => {
-//     const dims = getDimensionsOfContents(); 
-
-//     // We get the height of our window, and how much we scrolled (not of our screen)
-//     let windowHeight = window.innerHeight;
-//     let scrollY = window.scrollY || window.pageYOffset;
-//     let scrollPosition = scrollY + windowHeight;
-
-//     const elemPositions = {}
-
-//     // We now check the position of each element (Content) on the page
-//     for (let i = 0; i < data.length; i++) {
-//         elemPositions[`el${i}`] = data[i].getBoundingClientRect().top + scrollY + dims[`el${i}`];
-//     }
-
-//     console.log(Object.values(elemPositions));
-
-//     // Object that stores integers pointing to whether an element (Content) is in viewpoint or not, and to trigger an animation
-//     const checks = {}
-
-//     for (let elem in elemPositions) {
-//         if (scrollPosition > elem) {
-//             checks[elem] = 1;
-//         } else {
-//             checks[elem] = 0;
-//         }
-//     }
-
-//     console.log(Object.values(checks));
-//     return checks;
-// }
-
-// // Check if the animation should start
-// const checkAnimationStart = () => {
-//     const checks = getScrollPosition();
-//     const array = Object.values(checks);
-
-//     for (let i = 0; i < array.length; i++) {
-//         if (array[i] === 0) {
-//             typewriterAnimation(i, text[i].innerHTML);
-//         }
-//     }
-// }
-
-// // The actual animation changing the text
-// const typewriterAnimation = (indexofElement, number) => {
-//     let n = 0;
-//     let num = Number(number);
-
-//     while (n < num) {
-//         setTimeout((n) => {
-//             text[indexofElement].innerHTML = n;    
-//             n++;
-//         }, 700);
-//     }
-// }
-
-//window.addEventListener("scroll", checkAnimationStart());
+const stats = [6, 64, 2.2];
 
 const Statistics = () => {
+
+    const [inView, setInView] = useState(false);
+    const [inView1, setInView1] = useState(false);
+    const [inView2, setInView2] = useState(false);
+    const [num, setNum] = useState(0);
+    const [num1, setNum1] = useState(0);
+    const [num2, setNum2] = useState(0);
+    const containerRef = useRef(null);
+    const containerRef1 = useRef(null);
+    const containerRef2 = useRef(null);
+
+    useEffect(() => {
+        window.addEventListener('scroll', onScroll);
+
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+        }
+    }, [])
+
+    useEffect(() => {
+        let intervalID = '';
+
+        if (inView && num <= 5) {
+            intervalID = setInterval(() => {
+                setNum((num) => num + 1);
+            }, 200);
+        } else {
+            clearInterval(intervalID);
+        }
+
+        return () => {
+            clearInterval(intervalID);
+        }
+    }, [inView, num])
+
+    useEffect(() => {
+        let intervalID1 = '';
+
+        if (inView1 && num1 <= 63) {
+            intervalID1 = setInterval(() => {
+                setNum1((num1) => num1 + 2);
+            }, 40);
+        } else {
+            clearInterval(intervalID1);
+        }
+
+        return () => {
+            clearInterval(intervalID1);
+        }
+    }, [inView1, num1])
+
+    useEffect(() => {
+        let intervalID2 = '';
+
+        if (inView2 && num2 <= 2.0) {
+            intervalID2 = setInterval(() => {
+                setNum2((num2) => (num2 * 10 + (0.2 * 10))/10);
+            }, 100);
+        } else {
+            clearInterval(intervalID2);
+        }
+
+        return () => {
+            clearInterval(intervalID2);
+        }
+    }, [inView2, num2])
+
+    const onScroll = () => {
+        const scrollPosition = window.scrollY + window.innerHeight
+        if (containerRef) {
+            const topPosition = containerRef.current.getBoundingClientRect().top;
+            if (topPosition < scrollPosition) {
+                setInView(true);
+                //console.log(inView === undefined);
+            } else {
+                setInView(false);
+            }
+        }
+
+        if (containerRef1) {
+            const topPosition = containerRef1.current.getBoundingClientRect().top;
+            if (topPosition < scrollPosition) {
+                setInView1(true);
+                //console.log(inView === undefined);
+            } else {
+                setInView1(false);
+            }
+        }
+
+        if (containerRef2) {
+            const topPosition = containerRef2.current.getBoundingClientRect().top;
+            if (topPosition < scrollPosition) {
+                setInView2(true);
+                //console.log(inView === undefined);
+            } else {
+                setInView2(false);
+            }
+        }
+    }
+
     return (
         <Wrapper>
             <Container>
-                <Content className="stats">
-                    <Title><span className="stats-text">6</span> in 10</Title>
-                    <Subtitle>people have eyesight issues</Subtitle>
-                </Content>
-                <Content className="stats">
-                    <Title>Over <span className="stats-text">64</span>%</Title>
-                    <Subtitle>of adults wear eyeglasses</Subtitle>
-                </Content>
-                <Content className="stats">
-                    <Title><span className="stats-text">2.2</span> billion</Title>
-                    <Subtitle>people wear eyeglasses</Subtitle>
-                </Content>
+                <Content className="stats" ref={containerRef}>
+                    <Title><span className="stats-text">{num}</span>{desc[0].title}</Title>
+                    <Subtitle>{desc[0].sub}</Subtitle>
+                </Content> 
+                <Content className="stats" ref={containerRef1}>
+                    <Title><span className="stats-text">{num1}</span>{desc[1].title}</Title>
+                    <Subtitle>{desc[1].sub}</Subtitle>
+                </Content> 
+                <Content className="stats" ref={containerRef2}>
+                    <Title><span className="stats-text">{num2}</span>{desc[2].title}</Title>
+                    <Subtitle>{desc[2].sub}</Subtitle>
+                </Content> 
             </Container>
             <Bar>
 
