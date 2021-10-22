@@ -76,7 +76,7 @@ const Statistics = () => {
         if (inView && num <= 5) {
             intervalID = setInterval(() => {
                 setNum((num) => num + 1);
-            }, 200);
+            }, 300);
         } else {
             clearInterval(intervalID);
         }
@@ -92,7 +92,7 @@ const Statistics = () => {
         if (inView1 && num1 <= 63) {
             intervalID1 = setInterval(() => {
                 setNum1((num1) => num1 + 2);
-            }, 40);
+            }, 60);
         } else {
             clearInterval(intervalID1);
         }
@@ -108,7 +108,7 @@ const Statistics = () => {
         if (inView2 && num2 <= 2.0) {
             intervalID2 = setInterval(() => {
                 setNum2((num2) => (num2 * 10 + (0.2 * 10))/10);
-            }, 100);
+            }, 150);
         } else {
             clearInterval(intervalID2);
         }
