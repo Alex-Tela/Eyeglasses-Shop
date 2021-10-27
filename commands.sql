@@ -1,0 +1,31 @@
+// CREATE DATABASE
+
+CREATE DATABASE eyeglass_shop;
+
+// MAKE 3 TABLES
+
+CREATE TABLE Products (
+    Product_ID UUID PRIMARY KEY NOT NULL,
+    Product_Title VARCHAR(100) NOT NULL UNIQUE,
+    Price SINGLE NOT NULL,
+    Quantity SINGLE NOT NULL,
+    Category VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Customers (
+    Customer_ID UUID PRIMARY KEY NOT NULL,
+    Username VARCHAR(100) NOT NULL UNIQUE,
+    Password VARCHAR(300) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE Orders (
+    Order_ID UUID PRIMARY KEY NOT NULL,
+    Created_At DATE NOT NULL
+);
+
+CREATE TABLE Products_Orders_Join (
+    ID UUID PRIMARY KEY NOT NULL,
+    Product_ID UUID REFERENCES Products (Product_ID),
+    Order_ID UUID REFERENCES Orders (Order_ID)
+);

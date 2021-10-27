@@ -15,6 +15,7 @@ const SideMenu = styled.div`
     display: flex;
     flex-direction: column;
     padding: 15px 0 0 20px;
+    border-right: 1px solid #aaaaaa;
 `
 
 const Category = styled.h2`
@@ -39,7 +40,7 @@ const ListWrapper = styled.div`
     display: flex;
     flex-direction: column;
     flex: 4;
-    margin-right: 20px;
+    margin: 0px 20px;
 `
 
 const ImageWrapper = styled.div`
@@ -50,6 +51,7 @@ const ImageWrapper = styled.div`
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    margin: 15px 0px 20px 0px;
 `
 
 const Title = styled.h2`
@@ -65,6 +67,7 @@ const Title = styled.h2`
 const List = styled.div`
     display: grid;
     grid-template-columns: auto auto auto;
+    justify-content: space-evenly;
 `
 
 

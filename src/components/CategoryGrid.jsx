@@ -5,6 +5,7 @@ import womenGlasses from '../images/glasses/women-glasses.jpg'
 import menGlasses from '../images/glasses/men-glasses.jpg'
 import kidsGlasses from '../images/glasses/kids-glasses.jpg'
 import sunglasses from '../images/glasses/sunglasses.jpg'
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
     height: 600px;
@@ -123,31 +124,41 @@ const CategoryGrid = () => {
                 <Image1>
                     <InfoHover>
                         <InfoTitle>WOMEN'S GLASSES</InfoTitle>
-                        <Button>SHOP</Button>
+                        <Link to='/products/women'>
+                            <Button>SHOP</Button>
+                        </Link>
                     </InfoHover>
                 </Image1>
                 <Image2>
                     <InfoHover>
                         <InfoTitle>SUNGLASSES</InfoTitle>
-                        <Button>SHOP</Button>
+                        <Link to='/products/sunglasses'>
+                            <Button>SHOP</Button>
+                        </Link>
                     </InfoHover>
                 </Image2>
                 <Image3>
                     <InfoHover>
                         <InfoTitle>MEN'S GLASSES</InfoTitle>
-                        <Button>SHOP</Button>
+                        <Link to='/products/men'>
+                            <Button>SHOP</Button>
+                        </Link>
                     </InfoHover>
                 </Image3>
                 <Image4>
                     <InfoHover>
                         <InfoTitle>AESTHETIC GLASSES</InfoTitle>
-                        <Button>SHOP</Button>
+                        <Link to='/products/aesthetic'>
+                            <Button>SHOP</Button>
+                        </Link>
                     </InfoHover>
                 </Image4>
                 <Image5>
                     <InfoHover>
                         <InfoTitle>KIDS'S GLASSES</InfoTitle>
-                        <Button>SHOP</Button>
+                        <Link to='/products/kids'>
+                            <Button>SHOP</Button>
+                        </Link>
                     </InfoHover>
                 </Image5>
             </ImageGrid>
