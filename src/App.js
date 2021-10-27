@@ -17,7 +17,7 @@ export const App = () => {
         <Route path="/products/:category">
           <ProductList />
         </Route>
-        <Route path="/product/:id">
+        <Route path="/product/:id" exact>
           <Product />
         </Route>
         <Route path="/login">

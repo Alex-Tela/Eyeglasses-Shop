@@ -1,5 +1,6 @@
 import { ArrowBack } from '@material-ui/icons'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import background from '../images/background.png'
 
@@ -81,7 +82,7 @@ const Login = () => {
     return (
         <Container>
             <Bar>
-                <ArrowBack style={style}/>Go Back
+                <ArrowBack style={style}/><Link to='/'>Go Back</Link>
             </Bar>
             <Form>
                 <Title>LOGIN</Title>

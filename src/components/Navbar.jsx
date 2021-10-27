@@ -1,8 +1,10 @@
 import { makeStyles } from '@material-ui/core';
 import { SearchOutlined } from '@material-ui/icons';
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.PNG';
+import { navLinksStyle, otherButtonsStyle } from '../styles/styles';
 
 const nav = ["Home", "Products", "About", "Contact"];
 
@@ -73,17 +75,40 @@ const useStyles = makeStyles({
 
 const Navbar = () => {
     const classes = useStyles();
+    const [link, setLink] = useState('');
+
+    const handleLink = (elem) => {
+        let linkElem = '/';
+        switch(elem.toLowerCase()) {
+            case 'home':
+                linkElem = '/';
+                break;
+            case 'products':
+                linkElem = '/products/women';
+                break;
+            case 'about':
+                linkElem = '/';
+                break;
+            case 'contact':
+                linkElem = '/';
+                break;
+            default:
+                linkElem = '/';
+        }
+        return linkElem;
+    }
+
     return (
         <NavContainer>
             <Menu>
                 <Logo src={logo}></Logo>
                 {nav.map((item) => {
-                    return(<Item>{item}</Item>)
+                    return(<Link style={navLinksStyle} to={()=>handleLink(item)}><Item>{item}</Item></Link>)
                 })}
             </Menu>
             <Details>
-                <Login>Login</Login>
-                <Register>Register</Register>
+                <Link style={otherButtonsStyle} to='/login'><Login>Login</Login></Link>
+                <Link style={otherButtonsStyle} to='/register'><Register>Register</Register></Link>
                 <SearchOutlined className={classes.root}></SearchOutlined>
                 <Search placeholder="Search..."></Search>
             </Details>

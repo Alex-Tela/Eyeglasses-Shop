@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import { useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import ProductCard from '../components/ProductCard';
@@ -72,21 +74,54 @@ const List = styled.div`
 
 
 const ProductList = () => {
+    const [filter, setFilter] = useState('');
+    const location = useLocation();
+    const category = location.pathname.split("/")[2];
+    let title = '';
+
+    useEffect(() => {
+        console.log(category);
+        handleCategory(category);
+        console.log(filter);
+    }, [category]);
+
+    const handleCategory = (category) => {
+        let title = '';
+        switch(category) {
+            case 'women':
+                title = 'WOMEN\'S GLASSES';
+                break;
+            case 'men':
+                title = 'MEN\'S GLASSES';
+                break;
+            case 'kids':
+                title = 'KIDS\' GLASSES';
+                break;
+            case 'sunglasses':
+                title = 'SUNGLASSES';
+                break;
+            case 'aesthetic':
+                title = 'AESTHETIC GLASSES';
+                break;
+        }
+        setFilter(title);
+    }
+
     return (
         <div>
             <Navbar />
             <Wrapper>
                 <SideMenu>
                     <Category>CATEGORIES</Category>
-                    <Item>Women's Glasses</Item>
-                    <Item>Men's Glasses</Item>
-                    <Item>Kids' Glasses</Item>
-                    <Item>Sunglasses</Item>
-                    <Item>Aesthetic Glasses</Item>
+                    <Link to="/products/women"><Item>Women's Glasses</Item></Link>
+                    <Link to="/products/men"><Item>Men's Glasses</Item></Link>
+                    <Link to="/products/kids"><Item>Kids' Glasses</Item></Link>
+                    <Link to="/products/sunglasses"><Item>Sunglasses</Item></Link>
+                    <Link to="/products/aesthetic"><Item>Aesthetic Glasses</Item></Link>
                 </SideMenu>
                 <ListWrapper>
                     <ImageWrapper>
-                        <Title>MEN'S GLASSES</Title>
+                        <Title>{filter}</Title>
                     </ImageWrapper>
                     <List>
                         <ProductCard />

@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import one from '../images/glasses/1.png';
+import { otherButtonsStyle } from '../styles/styles';
 
 const Box = styled.div`
     width: 260px;
@@ -57,6 +59,7 @@ const Price = styled.p`
 
 const ProductCard = () => {
     return (
+        <Link style={otherButtonsStyle} to='/product/vbetbtb'>
         <Box>
             <ProductImage>
                 <Image src={one}></Image>
@@ -69,6 +72,7 @@ const ProductCard = () => {
                 </InfoWrapper>
             </ProductInfo>
         </Box>
+        </Link>
     )
 }
 
