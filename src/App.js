@@ -3,7 +3,6 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductList from './pages/ProductList';
-import ProductCard from './components/ProductCard';
 import Product from './pages/Product';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -14,10 +13,10 @@ export const App = () => {
         <Route path="/" exact>
           <Home />
         </Route>
-        <Route path="/products/:category">
+        <Route path="/products/cat/:category">
           <ProductList />
         </Route>
-        <Route path="/product/:id" exact>
+        <Route path="/products/:name" exact>
           <Product />
         </Route>
         <Route path="/login">

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -5,6 +6,7 @@ import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import ProductCard from '../components/ProductCard';
 import sunglasses from '../images/glasses/sunglasses.jpg'
+import { axios_ } from '../axios/base_url';
 
 const Wrapper = styled.div`
     display: flex;
@@ -72,21 +74,31 @@ const List = styled.div`
     justify-content: space-evenly;
 `
 
-
 const ProductList = () => {
     const [filter, setFilter] = useState('');
+    const [products, setProducts] = useState([]);
     const location = useLocation();
-    const category = location.pathname.split("/")[2];
-    let title = '';
+    const category = location.pathname.split("/")[3];
 
     useEffect(() => {
         console.log(category);
         handleCategory(category);
         console.log(filter);
-    }, [category]);
+        const getProducts = async () => {
+            try {
+                const res = await axios_.get(`/products/cat/${category}`)
+                setProducts(res.data);
+            } catch (err) {
+                console.log("Error: " + err);
+            }
+        }
+        getProducts()
+        console.log(products);
+    }, [filter, category]);
 
     const handleCategory = (category) => {
         let title = '';
+        // eslint-disable-next-line default-case
         switch(category) {
             case 'women':
                 title = 'WOMEN\'S GLASSES';
@@ -113,22 +125,20 @@ const ProductList = () => {
             <Wrapper>
                 <SideMenu>
                     <Category>CATEGORIES</Category>
-                    <Link to="/products/women"><Item>Women's Glasses</Item></Link>
-                    <Link to="/products/men"><Item>Men's Glasses</Item></Link>
-                    <Link to="/products/kids"><Item>Kids' Glasses</Item></Link>
-                    <Link to="/products/sunglasses"><Item>Sunglasses</Item></Link>
-                    <Link to="/products/aesthetic"><Item>Aesthetic Glasses</Item></Link>
+                    <Link to="/products/cat/women"><Item>Women's Glasses</Item></Link>
+                    <Link to="/products/cat/men"><Item>Men's Glasses</Item></Link>
+                    <Link to="/products/cat/kids"><Item>Kids' Glasses</Item></Link>
+                    <Link to="/products/cat/sunglasses"><Item>Sunglasses</Item></Link>
+                    <Link to="/products/cat/aesthetic"><Item>Aesthetic Glasses</Item></Link>
                 </SideMenu>
                 <ListWrapper>
                     <ImageWrapper>
                         <Title>{filter}</Title>
                     </ImageWrapper>
                     <List>
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
+                        {products.map((prod) => {
+                            return <ProductCard obj={prod}/>
+                        })}
                     </List>
                 </ListWrapper>
             </Wrapper>

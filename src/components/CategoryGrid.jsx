@@ -124,7 +124,7 @@ const CategoryGrid = () => {
                 <Image1>
                     <InfoHover>
                         <InfoTitle>WOMEN'S GLASSES</InfoTitle>
-                        <Link to='/products/women'>
+                        <Link to='/products/cat/women'>
                             <Button>SHOP</Button>
                         </Link>
                     </InfoHover>
@@ -132,7 +132,7 @@ const CategoryGrid = () => {
                 <Image2>
                     <InfoHover>
                         <InfoTitle>SUNGLASSES</InfoTitle>
-                        <Link to='/products/sunglasses'>
+                        <Link to='/products/cat/sunglasses'>
                             <Button>SHOP</Button>
                         </Link>
                     </InfoHover>
@@ -140,7 +140,7 @@ const CategoryGrid = () => {
                 <Image3>
                     <InfoHover>
                         <InfoTitle>MEN'S GLASSES</InfoTitle>
-                        <Link to='/products/men'>
+                        <Link to='/products/cat/men'>
                             <Button>SHOP</Button>
                         </Link>
                     </InfoHover>
@@ -148,7 +148,7 @@ const CategoryGrid = () => {
                 <Image4>
                     <InfoHover>
                         <InfoTitle>AESTHETIC GLASSES</InfoTitle>
-                        <Link to='/products/aesthetic'>
+                        <Link to='/products/cat/aesthetic'>
                             <Button>SHOP</Button>
                         </Link>
                     </InfoHover>
@@ -156,7 +156,7 @@ const CategoryGrid = () => {
                 <Image5>
                     <InfoHover>
                         <InfoTitle>KIDS'S GLASSES</InfoTitle>
-                        <Link to='/products/kids'>
+                        <Link to='/products/cat/kids'>
                             <Button>SHOP</Button>
                         </Link>
                     </InfoHover>

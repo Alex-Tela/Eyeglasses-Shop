@@ -84,7 +84,7 @@ const Navbar = () => {
                 linkElem = '/';
                 break;
             case 'products':
-                linkElem = '/products/women';
+                linkElem = '/products/cat/women';
                 break;
             case 'about':
                 linkElem = '/';

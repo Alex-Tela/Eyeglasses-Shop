@@ -57,18 +57,20 @@ const Price = styled.p`
 `
 
 
-const ProductCard = () => {
+const ProductCard = (props) => {
+    const link = `/products/${props.obj.product_title}`;
     return (
-        <Link style={otherButtonsStyle} to='/product/vbetbtb'>
+        <Link style={otherButtonsStyle} to={link}>
         <Box>
             <ProductImage>
                 <Image src={one}></Image>
             </ProductImage>
             <ProductInfo>
-                <ProductTitle>Men's Glasses</ProductTitle>
+                <ProductTitle>{props.obj.product_title}</ProductTitle>
                 <InfoWrapper>
-                    <Price>$90.<span style={{fontSize: '0.9rem'}}>99</span></Price>
-                    <ProductStock>In Stock</ProductStock>
+                    {/* <Price>$90.<span style={{fontSize: '0.9rem'}}>99</span></Price> */}
+                    <Price>${props.obj.price}</Price>
+                    <ProductStock>{ props.obj.quantity >= 0 ? "In Stock": "Not in Stock"}</ProductStock>
                 </InfoWrapper>
             </ProductInfo>
         </Box>
