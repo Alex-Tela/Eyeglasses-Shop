@@ -122,31 +122,37 @@ const Statistics = () => {
         const scrollPosition = window.scrollY + window.innerHeight
         if (containerRef) {
             const topPosition = containerRef.current.getBoundingClientRect().top;
-            if (topPosition < scrollPosition) {
-                setInView(true);
-                //console.log(inView === undefined);
-            } else {
-                setInView(false);
+            if (topPosition) {
+                if (topPosition < scrollPosition) {
+                    setInView(true);
+                    //console.log(inView === undefined);
+                } else {
+                    setInView(false);
+                }
             }
         }
 
         if (containerRef1) {
             const topPosition = containerRef1.current.getBoundingClientRect().top;
-            if (topPosition < scrollPosition) {
-                setInView1(true);
-                //console.log(inView === undefined);
-            } else {
-                setInView1(false);
+            if (topPosition) {
+                if (topPosition < scrollPosition) {
+                    setInView1(true);
+                    //console.log(inView === undefined);
+                } else {
+                    setInView1(false);
+                }
             }
         }
 
         if (containerRef2) {
             const topPosition = containerRef2.current.getBoundingClientRect().top;
-            if (topPosition < scrollPosition) {
-                setInView2(true);
-                //console.log(inView === undefined);
-            } else {
-                setInView2(false);
+            if (topPosition) {
+                if (topPosition < scrollPosition) {
+                    setInView2(true);
+                    //console.log(inView === undefined);
+                } else {
+                    setInView2(false);
+                }
             }
         }
     }

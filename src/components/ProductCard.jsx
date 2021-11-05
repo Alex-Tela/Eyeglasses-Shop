@@ -35,7 +35,7 @@ const ProductInfo = styled.div`
 
 const ProductTitle = styled.h2`
     text-align: left;
-    padding: 15px 0 0 15px;
+    padding: 15px;
     font-weight: 300;
     font-size: 1.3rem;
 `
@@ -58,7 +58,7 @@ const Price = styled.p`
 
 
 const ProductCard = (props) => {
-    const link = `/products/${props.obj.product_title}`;
+    const link = `/products/${props.arr[0]}`;
     return (
         <Link style={otherButtonsStyle} to={link}>
         <Box>
@@ -66,11 +66,11 @@ const ProductCard = (props) => {
                 <Image src={one}></Image>
             </ProductImage>
             <ProductInfo>
-                <ProductTitle>{props.obj.product_title}</ProductTitle>
+                <ProductTitle>{props.arr[1]}</ProductTitle>
                 <InfoWrapper>
                     {/* <Price>$90.<span style={{fontSize: '0.9rem'}}>99</span></Price> */}
-                    <Price>${props.obj.price}</Price>
-                    <ProductStock>{ props.obj.quantity >= 0 ? "In Stock": "Not in Stock"}</ProductStock>
+                    <Price>${props.arr[2]}</Price>
+                    <ProductStock>{ props.arr[4] >= 0 ? "In Stock": "Not in Stock"}</ProductStock>
                 </InfoWrapper>
             </ProductInfo>
         </Box>

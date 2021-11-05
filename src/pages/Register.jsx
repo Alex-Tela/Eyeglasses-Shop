@@ -1,8 +1,9 @@
 import { ArrowBack } from '@material-ui/icons';
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import background from '../images/background.png'
+import { axios_ } from '../axios/base_url';
 
 const style = {
     margin: '0px 10px'
@@ -79,6 +80,33 @@ const Button = styled.button`
 `
 
 const Register = () => {
+    const [users, setUsers] = useState([]);
+    const [ready, setReady] = useState(false);
+    const [valid, setValid] = useState(false);
+
+    useEffect(() => {
+        console.log(ready);
+        if (users.length === 0) {
+            getUsers();
+            setReady(true);
+        }
+        
+        console.log(users);
+    }, [ready, users]);
+
+    const getUsers = async () => {
+        try {
+            const res = await axios_.get(`/users`);
+            setUsers(res.data);
+        } catch (err) {
+            console.log("Error: " + err);
+        }
+    }
+
+    const handleClick = () => {
+        console.log("Hi");
+    };
+
     return (
         <Container>
             <Bar>
@@ -92,7 +120,7 @@ const Register = () => {
                 <Input type="text"/>
                 <Label>Password</Label>
                 <Input type="password"/>
-                <Button>Sign up</Button>
+                <Button >Sign up</Button>
             </Form>
         </Container>
     )

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -81,7 +80,6 @@ const ProductList = () => {
     const category = location.pathname.split("/")[3];
 
     useEffect(() => {
-        console.log(category);
         handleCategory(category);
         console.log(filter);
         const getProducts = async () => {
@@ -94,7 +92,7 @@ const ProductList = () => {
         }
         getProducts()
         console.log(products);
-    }, [filter, category]);
+    }, [category]);
 
     const handleCategory = (category) => {
         let title = '';
@@ -137,7 +135,8 @@ const ProductList = () => {
                     </ImageWrapper>
                     <List>
                         {products.map((prod) => {
-                            return <ProductCard obj={prod}/>
+                            console.log(prod);
+                            return <ProductCard arr={prod}/>
                         })}
                     </List>
                 </ListWrapper>

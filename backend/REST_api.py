@@ -63,8 +63,8 @@ def get_products(conn):
     print(list(results))
     return list(results)
 
-def get_product_by_name(conn, product):
-    query = """SELECT product_id, product_title, price, category, quantity FROM products WHERE product_title = """ + f"\'{product}\'" + """;"""
+def get_product_by_id(conn, product):
+    query = """SELECT product_id, product_title, price, category, quantity FROM products WHERE product_id = """ + f"\'{product}\'" + """;"""
     cursor = conn.cursor()
     cursor.execute(query)
     results = cursor.fetchall()
@@ -145,11 +145,11 @@ class Users(Resource):
 # Products - we will use it for getting the info about a product when viewing a product page.
 # Also for when we want to view a list of all the products
 class Products(Resource):
-    def get(self, name=None, cat=None):
+    def get(self, id=None, cat=None):
         conn = create_connection("eyeglass_shop", "16dKL!07hai")
-        if name is not None:
+        if id is not None:
             try:
-                resource = get_product_by_name(conn, name)
+                resource = get_product_by_id(conn, id)
                 products_json = json.dumps(resource) # get one user
                 conn.close()
                 return Response(response=products_json, status=200, content_type="application/json")
@@ -213,7 +213,7 @@ class Products(Resource):
 
 
 api.add_resource(Users, "/users", "/users/<string:name>")
-api.add_resource(Products, "/products", "/products/<string:name>", "/products/cat/<string:cat>")
+api.add_resource(Products, "/products", "/products/<string:id>", "/products/cat/<string:cat>")
 
 if __name__ == "__main__":
     app.run(debug=True)

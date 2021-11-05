@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import one from '../images/glasses/1.png';
+import { axios_ } from '../axios/base_url';
 
 const Container = styled.div`
     height: 90vh;
@@ -62,6 +64,26 @@ const Button = styled.button`
 `
 
 const Product = () => {
+    const [product, setProduct] = useState([]);
+    const location = useLocation();
+    const productID = location.pathname.split('/')[2];
+
+    useEffect(() => {
+        const getProductDetails = async () => {
+            try {
+                const res = await axios_.get(`/products/${productID}`);
+                console.log(res.data);
+                setProduct(res.data);
+            } catch (err) {
+                console.log("Error: " + err);
+            }
+        }
+        console.log(product);
+        getProductDetails();
+    }, [])
+
+
+
     return (
         <div>
             <Navbar />
@@ -70,13 +92,14 @@ const Product = () => {
                     <Image src={one}></Image>
                 </ImageWrapper>
                 <Info>
-                    <Title>Men's Glasses</Title>
+                    <Title>{product[0] === undefined ? "" : product[0][1]}</Title>
                     <Desc>
                         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut esse provident vitae officia nulla, 
                         perferendis distinctio ipsa sapiente enim quos quaerat porro fuga minus deserunt excepturi natus tempora suscipit aliquam?
                     </Desc>
-                    <Price>$ 90.<span style={{fontSize: '1.0rem'}}>99</span></Price>
-                    <Button>ADD TO CART</Button>
+                    {/* <Price>$ 90.<span style={{fontSize: '1.0rem'}}>99</span></Price> */}
+                    <Price>$ {product[0] === undefined ? "" : product[0][2]}</Price>
+                    {product[0] === undefined ? "" : (product[0][4] ? <Button>ADD TO CART</Button> : <Button>NOT IN STOCK</Button>)}
                 </Info>
             </Container>
         </div>
