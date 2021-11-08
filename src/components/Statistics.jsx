@@ -120,9 +120,9 @@ const Statistics = () => {
 
     const onScroll = () => {
         const scrollPosition = window.scrollY + window.innerHeight
-        if (containerRef) {
+        if (containerRef !== null) {
             const topPosition = containerRef.current.getBoundingClientRect().top;
-            if (topPosition) {
+            if (topPosition !== null) {
                 if (topPosition < scrollPosition) {
                     setInView(true);
                     //console.log(inView === undefined);
@@ -132,9 +132,9 @@ const Statistics = () => {
             }
         }
 
-        if (containerRef1) {
+        if (containerRef1 !== null) {
             const topPosition = containerRef1.current.getBoundingClientRect().top;
-            if (topPosition) {
+            if (topPosition !== null) {
                 if (topPosition < scrollPosition) {
                     setInView1(true);
                     //console.log(inView === undefined);
@@ -144,9 +144,9 @@ const Statistics = () => {
             }
         }
 
-        if (containerRef2) {
+        if (containerRef2 !== null) {
             const topPosition = containerRef2.current.getBoundingClientRect().top;
-            if (topPosition) {
+            if (topPosition !== null) {
                 if (topPosition < scrollPosition) {
                     setInView2(true);
                     //console.log(inView === undefined);

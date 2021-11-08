@@ -1,5 +1,5 @@
 import { ArrowBack } from '@material-ui/icons';
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import background from '../images/background.png'
@@ -80,31 +80,54 @@ const Button = styled.button`
 `
 
 const Register = () => {
-    const [users, setUsers] = useState([]);
-    const [ready, setReady] = useState(false);
-    const [valid, setValid] = useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const formData = {};
 
-    useEffect(() => {
-        console.log(ready);
-        if (users.length === 0) {
-            getUsers();
-            setReady(true);
+    const handleClick = () => {
+        handleForm();
+        console.log(JSON.stringify(formData));
+        getUsers();
+    };
+
+    const handleChange = ({ target }) => {
+        switch (target.name) {
+            case 'username':
+                setUsername(target.value);
+                break;
+            case 'password':
+                setPassword(target.value);
+                break;
+            case 'email':
+                setEmail(target.value);
+                break;
+            default:
+                console.log("Nothing happened");
         }
-        
-        console.log(users);
-    }, [ready, users]);
+    };
+
+    const handleForm = () => {
+        formData['username'] = username;
+        formData['password'] = password;
+        formData['email'] = email;
+    };
 
     const getUsers = async () => {
         try {
-            const res = await axios_.get(`/users`);
-            setUsers(res.data);
+            const params = {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({}), 
+                headers: {
+                    'Content-Type': 'application/json'
+                }               
+            }
+            const res = await axios_.post(`/users`, JSON.stringify(formData));
+            console.log("Response: " + res.data);
         } catch (err) {
             console.log("Error: " + err);
         }
-    }
-
-    const handleClick = () => {
-        console.log("Hi");
     };
 
     return (
@@ -115,12 +138,12 @@ const Register = () => {
             <Form>
                 <Title>SIGN UP</Title>
                 <Label>Email</Label>
-                <Input type="email"/>
+                <Input onChange={handleChange} type="email" name="email" required autoComplete="off"/>
                 <Label>Username</Label>
-                <Input type="text"/>
+                <Input onChange={handleChange} type="text" name="username" required autoComplete="off"/>
                 <Label>Password</Label>
-                <Input type="password"/>
-                <Button >Sign up</Button>
+                <Input onChange={handleChange} type="password" name="password" required autoComplete="off"/>
+                <Button type="submit" onClick={handleClick}>Sign up</Button>
             </Form>
         </Container>
     )

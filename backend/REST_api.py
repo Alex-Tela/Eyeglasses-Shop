@@ -1,10 +1,15 @@
+import os
 from os import stat
 from flask import Flask, Response
 from flask_restful import Resource, Api, request
 from flask_cors import CORS
+from uuid import uuid4
 import simplejson as json
 import psycopg2
 from psycopg2 import Error
+
+db_filename = os.environ.get('POSTGRES_DB_NAME')
+db_pass = os.environ.get('POSTGRES_DB_PASS')
 
 app = Flask(__name__)
 CORS(app)
@@ -31,13 +36,6 @@ def create_product(conn, product):
     conn.commit()
     return cursor.lastrowid
 
-def create_customer(conn, customer):
-    query = """INSERT INTO customers (customer_id, username, password, email) VALUES(generate_uuid_v4(), ?, ?, ?);"""
-    cursor = conn.cursor()
-    cursor.execute(query, customer)
-    conn.commit()
-    return cursor.lastrowid
-
 def get_customers(conn):
     query = """SELECT * FROM customers;"""
     cursor = conn.cursor()
@@ -54,6 +52,21 @@ def get_customer(conn, customer):
     results = cursor.fetchall()
     print(list(results))
     return list(results)
+
+def create_customer(conn, customer):
+    # check if customer already exists
+    check = get_customer(conn, list(customer)[0])  # we should get back an array
+    print(check)
+    if len(check) != 0:
+        return "Enter other credentials"   # user already exists
+    else:
+        details = list(customer)
+        query = """INSERT INTO customers (customer_id, username, password, email) VALUES(""" + f"\'{str(uuid4())}\'" + """, """ + f"\'{details[0]}\'" + """, """ + f"\'{details[1]}\'" + """, """ + f"\'{details[2]}\'" + """);"""
+        print(query)
+        cursor = conn.cursor()
+        cursor.execute(query, customer)
+        conn.commit()
+        return "Account created succesfully!"
 
 def get_products(conn):
     query = """SELECT * FROM products;"""
@@ -80,8 +93,13 @@ def get_product_by_cat(conn, product):
     return list(results)
 
 
+headers = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods' : 'PUT,GET, POST', 'Access-Control-Allow-Headers': 'Content-Type'}
+
 # Users - we will mostly use it for login and registering.
 class Users(Resource):
+    def options (self):
+        return {'Allow' : 'GET, POST, PUT'}, 200, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods' : 'PUT,GET, POST', 'Access-Control-Allow-Headers': 'Content-Type'}
+
     def get(self, name=None):
         conn = create_connection("eyeglass_shop", "16dKL!07hai")
         if name is not None:
@@ -100,16 +118,25 @@ class Users(Resource):
             return Response(response=users_json, status=200, content_type="application/json")
 
     def post(self):
-        conn = create_connection("users.db")
-        data = request.json
-        user = (data['username'], data['password'], data['email'])
+        conn = create_connection("eyeglass_shop", "16dKL!07hai")
         try:
-            create_customer(conn, user)
+            data = request.json
+        except Exception as e:
             conn.close()
-            return Response(status=200, content_type='application/json')
+            error = {"error": str(e)}
+            return Response(json.dumps(error), status=500, content_type='application/json')
+        try:
+            print(data) 
+            user = (data['username'], data['password'], data['email'])
+            resource = create_customer(conn, user)
+            user_json = json.dumps(resource)
+            conn.close()
+            response = Response(response=user_json, status=200, content_type='application/json')
+            return response
         except Exception as e: 
             conn.close()
-            return Response("{error: Failed to insert new user}", status=500, content_type='application/json')
+            error = {"error": str(e)}
+            return Response(json.dumps(error), status=500, content_type='application/json')
 
     def put(self, id):
         index = None
