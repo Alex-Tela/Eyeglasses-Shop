@@ -76,23 +76,53 @@ const List = styled.div`
 const ProductList = () => {
     const [filter, setFilter] = useState('');
     const [products, setProducts] = useState([]);
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [numOfItems, setNumOfItems] = useState(0);
     const location = useLocation();
     const category = location.pathname.split("/")[3];
 
     useEffect(() => {
         handleCategory(category);
-        console.log(filter);
+        //console.log(filter);
         const getProducts = async () => {
             try {
-                const res = await axios_.get(`/products/cat/${category}`)
+                const res = await axios_.get(`/products/cat/${category}`);
                 setProducts(res.data);
             } catch (err) {
                 console.log("Error: " + err);
             }
         }
         getProducts()
-        console.log(products);
+        //console.log(products);
     }, [category]);
+
+    useEffect(() => {
+        handleLoggedInUser();
+
+    }, [loggedIn])
+
+    useEffect(() => {
+        handleNumOfItems();
+    }, [loggedIn, numOfItems])
+
+
+    const handleNumOfItems = () => {
+        if (loggedIn) {
+            const items = JSON.parse(localStorage.getItem('ShoppingCart'));
+            setNumOfItems(Object.entries(items).length);
+        } else {
+            setNumOfItems(0);
+        }
+    }
+
+    const handleLoggedInUser = () => {
+        const user = JSON.parse(localStorage.getItem('LoggedIn'));
+        if (user) {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
+    }
 
     const handleCategory = (category) => {
         let title = '';
@@ -119,7 +149,7 @@ const ProductList = () => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar logged={loggedIn} handleLogin={handleLoggedInUser} numOfItems={numOfItems}/>
             <Wrapper>
                 <SideMenu>
                     <Category>CATEGORIES</Category>
@@ -135,7 +165,6 @@ const ProductList = () => {
                     </ImageWrapper>
                     <List>
                         {products.map((prod) => {
-                            console.log(prod);
                             return <ProductCard arr={prod}/>
                         })}
                     </List>

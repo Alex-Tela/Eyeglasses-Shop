@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core';
-import { SearchOutlined } from '@material-ui/icons';
-import React, { useState } from 'react';
+import { Badge, makeStyles } from '@material-ui/core';
+import { SearchOutlined, ShoppingCartOutlined } from '@material-ui/icons';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.PNG';
@@ -45,6 +45,7 @@ const Details = styled.div`
 
 const Login = styled.div`
     padding: 1.1rem;
+    cursor: pointer;
 `
 
 const Register = styled.div`
@@ -69,13 +70,22 @@ const useStyles = makeStyles({
     root: {
         marginRight: '-10px',
         fontSize: '1.3rem',
+    },
 
+    cart: {
+        cursor: 'pointer'
+    },
+
+    badge: {
+        marginRight: '2.2rem'
     }
 })
 
-const Navbar = () => {
+const Navbar = (props) => {
+
     const classes = useStyles();
-    const [link, setLink] = useState('');
+    //console.log(props.logged);
+
 
     const handleLink = (elem) => {
         let linkElem = '/';
@@ -98,6 +108,13 @@ const Navbar = () => {
         return linkElem;
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem('LoggedIn');
+        localStorage.removeItem('ShoppingCart');
+        props.handleLogin();
+    }
+
+
     return (
         <NavContainer>
             <Menu>
@@ -107,8 +124,12 @@ const Navbar = () => {
                 })}
             </Menu>
             <Details>
-                <Link style={otherButtonsStyle} to='/login'><Login>Login</Login></Link>
+                { props.logged === true ?
+                    <Login onClick={handleLogout}>Log Out</Login> : 
+                    <Link style={otherButtonsStyle} to='/login'><Login>Login</Login></Link>}
                 <Link style={otherButtonsStyle} to='/register'><Register>Register</Register></Link>
+                { props.logged === true && <Badge className={classes.badge} badgeContent={props.numOfItems} color='primary'><Link style={otherButtonsStyle} to='/cart'><ShoppingCartOutlined className={classes.cart}/></Link></Badge>}
+
                 <SearchOutlined className={classes.root}></SearchOutlined>
                 <Search placeholder="Search..."></Search>
             </Details>

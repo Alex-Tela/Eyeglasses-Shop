@@ -65,8 +65,10 @@ const Button = styled.button`
 
 const Product = () => {
     const [product, setProduct] = useState([]);
+    const [loggedIn, setLoggedIn] = useState(false);
     const location = useLocation();
     const productID = location.pathname.split('/')[2];
+    const [numOfItems, setNumOfItems] = useState(0);
 
     useEffect(() => {
         const getProductDetails = async () => {
@@ -82,11 +84,62 @@ const Product = () => {
         getProductDetails();
     }, [])
 
+    useEffect(() => {
+        handleNumOfItems();
+        console.log(numOfItems);
+    }, [loggedIn, numOfItems])
 
+    useEffect(() => {
+        handleLoggedInUser();
+        console.log(loggedIn);
+
+    }, [loggedIn])
+
+    
+    const handleNumOfItems = () => {
+        if (loggedIn) {
+            const items = JSON.parse(localStorage.getItem('ShoppingCart'));
+            setNumOfItems(Object.entries(items).length);
+        } else {
+            setNumOfItems(0);
+        }
+    }
+
+    const handleLoggedInUser = () => {
+        const user = JSON.parse(localStorage.getItem('LoggedIn'));
+        if (user) {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
+    }
+
+    const handleClick = () => {
+        if (loggedIn) {
+            const items = JSON.parse(localStorage.getItem('ShoppingCart'));
+            console.log(items);
+            const [ prod ] = product;
+
+            if (Object.entries(items).length === 0) {
+                items['0'] = prod;
+            } else {
+                const lastItemInObject = Object.entries(items).length-1;
+                console.log(lastItemInObject);
+                items[`${Number(lastItemInObject)+1}`] = prod;
+            }
+
+            setNumOfItems(Object.entries(items).length);
+            
+            localStorage.setItem('ShoppingCart', JSON.stringify(items));
+            console.log(JSON.parse(localStorage.getItem('ShoppingCart')));
+        } else {
+            console.log("Not logged in"); 
+        }
+    }
 
     return (
         <div>
-            <Navbar />
+            <Navbar logged={loggedIn} handleLogin={handleLoggedInUser} numOfItems={numOfItems}/>
             <Container>
                 <ImageWrapper>
                     <Image src={one}></Image>
@@ -99,7 +152,7 @@ const Product = () => {
                     </Desc>
                     {/* <Price>$ 90.<span style={{fontSize: '1.0rem'}}>99</span></Price> */}
                     <Price>$ {product[0] === undefined ? "" : product[0][2]}</Price>
-                    {product[0] === undefined ? "" : (product[0][4] ? <Button>ADD TO CART</Button> : <Button>NOT IN STOCK</Button>)}
+                    {product[0] === undefined ? "" : (product[0][4] ? <Button onClick={handleClick}>ADD TO CART</Button> : <Button>NOT IN STOCK</Button>)}
                 </Info>
             </Container>
         </div>

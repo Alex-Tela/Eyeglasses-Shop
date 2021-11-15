@@ -53,6 +53,21 @@ def get_customer(conn, customer):
     print(list(results))
     return list(results)
 
+def login_customer(conn, customer):
+    check = get_customer(conn, list(customer)[0])  # we should get back an array
+    print(check)
+    if len(check) == 0:
+        return "Invalid credentials!"   # user does not exist
+    else:
+        details = list(customer)
+        # print("Details: " + str(details))
+        # print(check[0][1])
+        # print(check[0][2])
+        if (details[0] == check[0][1] and details[1] == check[0][2]):
+            return f"User {details[0]} is logged in"
+        else:
+            return "Second Catch: Invalid credentials!"   # user does not exist
+
 def create_customer(conn, customer):
     # check if customer already exists
     check = get_customer(conn, list(customer)[0])  # we should get back an array
@@ -119,16 +134,27 @@ class Users(Resource):
 
     def post(self):
         conn = create_connection("eyeglass_shop", "16dKL!07hai")
+
         try:
             data = request.json
         except Exception as e:
             conn.close()
             error = {"error": str(e)}
             return Response(json.dumps(error), status=500, content_type='application/json')
+
         try:
             print(data) 
-            user = (data['username'], data['password'], data['email'])
-            resource = create_customer(conn, user)
+            if (len(data.keys()) == 4):
+                user = (data['username'], data['password'], data['email'], data['type'])
+            else:
+                user = (data['username'], data['password'], data['type'])
+
+            if (data['type'] == 'register'):
+                resource = create_customer(conn, user)
+
+            elif (data['type'] == 'login'):
+                resource = login_customer(conn, user)
+
             user_json = json.dumps(resource)
             conn.close()
             response = Response(response=user_json, status=200, content_type='application/json')

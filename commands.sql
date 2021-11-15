@@ -60,3 +60,5 @@ INSERT INTO products_orders_join (ID, product_ID, order_id) VALUES (uuid_generat
 INSERT INTO products_orders_join (ID, product_ID, order_id) VALUES (uuid_generate_v4(), '42a9330e-13fa-49c3-86d1-994206b8c70d', 'ab44a4e9-1cc1-428e-a115-385fc648e328');
 INSERT INTO products_orders_join (ID, product_ID, order_id) VALUES (uuid_generate_v4(), '8b184535-fe71-4645-801a-dfc10d1964d5', '2520b22e-efdd-4eb5-9d89-7e948664a0cb');
 INSERT INTO products_orders_join (ID, product_ID, order_id) VALUES (uuid_generate_v4(), '296a0c57-7c17-4c7b-99ab-4bd24f26f509', 'ea2aaab4-afe4-43cb-a340-9edce8bca32c');
+
+SELECT products.product_id, product_title, price, customer_id FROM products INNER JOIN (orders INNER JOIN products_orders_join ON orders.order_id = products_orders_join.order_id) ON products.product_id = products_orders_join.product_id;

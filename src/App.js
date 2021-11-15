@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductList from './pages/ProductList';
 import Product from './pages/Product';
+import Cart from './pages/Cart';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 export const App = () => {
@@ -24,6 +25,9 @@ export const App = () => {
         </Route>
         <Route path="/register">
           <Register />
+        </Route>
+        <Route path="/cart">
+          <Cart />
         </Route>
       </Switch>
     </Router>

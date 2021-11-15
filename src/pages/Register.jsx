@@ -1,6 +1,6 @@
 import { ArrowBack } from '@material-ui/icons';
-import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import background from '../images/background.png'
 import { axios_ } from '../axios/base_url';
@@ -83,6 +83,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const history = useHistory();
     const formData = {};
 
     const handleClick = () => {
@@ -111,18 +112,19 @@ const Register = () => {
         formData['username'] = username;
         formData['password'] = password;
         formData['email'] = email;
+        formData['type'] = 'register';
     };
 
     const getUsers = async () => {
         try {
-            const params = {
+            /*const params = {
                 method: 'POST',
                 mode: 'cors',
                 body: JSON.stringify({}), 
                 headers: {
                     'Content-Type': 'application/json'
                 }               
-            }
+            }*/
             const res = await axios_.post(`/users`, JSON.stringify(formData));
             console.log("Response: " + res.data);
         } catch (err) {
@@ -130,10 +132,14 @@ const Register = () => {
         }
     };
 
+    const handleGoBack = () => {
+        history.goBack();
+    }
+
     return (
         <Container>
             <Bar>
-                <ArrowBack style={style}/><Link to='/'>Go Back</Link>
+                <ArrowBack style={style} onClick={handleGoBack}/>Go Back
             </Bar>
             <Form>
                 <Title>SIGN UP</Title>
